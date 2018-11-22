@@ -42,7 +42,7 @@ class App extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Todo List</h1>
+          <h1>Todo List ({this.props.incompleteCount})</h1>
 
           <label className="hide-completed">
             <input
@@ -74,6 +74,7 @@ class App extends Component {
 
 export default withTracker(() => {
   return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch()
+    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
+    incompleteCount: Tasks.find({ checked: { $ne: true } }).count()
   };
 })(App);
