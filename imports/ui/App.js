@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks';
 import Task from './Task.js';
+import AccountsUIWrapper from './AccountsUIWrapper';
  
 // App component - represents the whole app
 class App extends Component {
@@ -52,6 +53,8 @@ class App extends Component {
               onClick={this.toggleHideCompleted} />
               Hide Completed Tasks
           </label>
+
+          <AccountsUIWrapper />
 
           <form
             className="new-task"
