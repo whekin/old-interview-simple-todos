@@ -33,7 +33,7 @@ Meteor.methods({
 
   'tasks.setChecked'(taskId, setChecked) {
     check(taskId, String);
-    check(setcheked, Boolean);
+    check(setChecked, Boolean);
 
     Tasks.update(taskId, { $set: { checked: setChecked } });
   },
