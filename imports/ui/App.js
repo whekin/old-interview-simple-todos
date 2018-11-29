@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks';
@@ -81,7 +80,6 @@ class App extends Component {
                 value={this.state.taskValue} />
             </form> : ''
           }
-
         </header>
  
         <ul>
