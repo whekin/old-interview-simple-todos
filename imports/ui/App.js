@@ -9,17 +9,24 @@ import AccountsUIWrapper from './AccountsUIWrapper';
 // App component - represents the whole app
 class App extends Component {
   state = {
-    hideCompleted: false
+    hideCompleted: false,
+    taskValue: ""
   };
+
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
 
   handleSubmit = event => {
     event.preventDefault();
 
-    const text = ReactDOM.findDOMNode(this.refs.textInput).value.trim();
+    Meteor.call('tasks.insert', this.state.taskValue.trim());
 
-    Meteor.call('tasks.insert', text);
-
-    ReactDOM.findDOMNode(this.refs.textInput).value = '';
+    this.setState({
+      taskValue: ""
+    });
   }
 
   toggleHideCompleted = () => {
@@ -67,9 +74,11 @@ class App extends Component {
               className="new-task"
               onSubmit={this.handleSubmit}>
               <input
+                name="taskValue"
                 type="text"
-                ref="textInput"
-                placeholder="Type to add new tasks" />
+                placeholder="Type to add new tasks"
+                onChange={this.handleChange}
+                value={this.state.taskValue} />
             </form> : ''
           }
 
