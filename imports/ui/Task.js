@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import classnames from 'classnames';
+import { ListItem, IconButton, Checkbox, Tooltip } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete'
+import CheckCircleIconOutline from '@material-ui/icons/CheckCircleOutline';
+import CheckCirleIcon from '@material-ui/icons/CheckCircle';
+import PublicIcon from '@material-ui/icons/Public';
 
-// Task component - represents a single todo item
 export default class Task extends Component {
   toggleChecked = () => {
     Meteor.call('tasks.setChecked', this.props.task._id, !this.props.task.checked);
@@ -17,39 +20,47 @@ export default class Task extends Component {
   }
 
   render() {
-    const taskClassName = classnames({
-      checked: this.props.task.checked,
-      private: this.props.task.private
-    });
-
     return (
-      <li className={taskClassName}>
-        <button className="delete" onClick={this.deleteThisTask}>
-          &times;
-        </button>
+      <ListItem divider={true}>
+        <div className="task">
+          <div className="task__main">
+          {
+            this.props.showPrivateButton
+            ? (
+            <Checkbox
+              readOnly
+              checked={!!this.props.task.checked}
+              onClick={this.toggleChecked}
+              icon={<CheckCircleIconOutline />}
+              checkedIcon={<CheckCirleIcon />} /> )
+            : ''
+          }
 
-        <input
-          type="checkbox"
-          readOnly
-          checked={!!this.props.task.checked}
-          onClick={this.toggleChecked} />
-
-        {
-          this.props.showPrivateButton
-          ? (
-            <button
-              className="toggle-private"
-              onClick={this.togglePrivate}>
-              { this.props.task.private ? 'Private' : 'Public' }
-            </button>
-          )
-          : ''
-        }
-
-        <span className="text">
           <strong>{this.props.task.username}</strong>: {this.props.task.text}
-        </span>
-      </li>
+          </div>
+          {
+            this.props.showPrivateButton
+            ? (
+              <div className="task__ins">
+                <Tooltip title="to make this public">
+                  <Checkbox
+                  readOnly
+                  onClick={this.togglePrivate}
+                  checked={!this.props.task.private}
+                  icon={<PublicIcon />}
+                  checkedIcon={<PublicIcon color="secondary" />} />
+                </Tooltip>
+                
+                <Tooltip title="delete">
+                  <IconButton aria-label="Delete" onClick={this.deleteThisTask}>
+                    <DeleteIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip> 
+              </div> )
+            : ''
+          }
+        </div>
+      </ListItem>
     );
   }
 }

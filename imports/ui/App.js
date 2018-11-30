@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks';
+import Bar from './Bar.js';
 import Task from './Task.js';
-import AccountsUIWrapper from './AccountsUIWrapper';
+import { TextField, List} from '@material-ui/core';
  
 // App component - represents the whole app
 class App extends Component {
@@ -55,36 +56,38 @@ class App extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Todo List ({this.props.incompleteCount})</h1>
-
-          <label className="hide-completed">
-            <input
-              type="checkbox"
-              readOnly
-              checked={this.state.hideCompleted}
-              onClick={this.toggleHideCompleted} />
-              Hide Completed Tasks
-          </label>
-
-          <AccountsUIWrapper />
-
-          { this.props.currentUser ?
-            <form
-              className="new-task"
-              onSubmit={this.handleSubmit}>
-              <input
-                name="taskValue"
-                type="text"
-                placeholder="Type to add new tasks"
-                onChange={this.handleChange}
-                value={this.state.taskValue} />
+          <Bar
+            toggleHideCompleted={this.toggleHideCompleted}
+            hideCompleted={this.state.hideCompleted} />
+        </header>
+      <div className="wrapper">
+        { this.props.currentUser ?
+          <form
+            className="new-task"
+            onSubmit={this.handleSubmit}>
+            <TextField
+              label="New task"
+              placeholder="Type to add a new task"
+              helperText="Just do it!"
+              fullWidth
+              margin="normal"
+              variant="filled"
+              onChange={this.handleChange}
+              value={this.state.taskValue}
+              autoComplete="off"
+              name="taskValue"
+              InputLabelProps={{
+                shrink: true,
+              }} />
             </form> : ''
           }
-        </header>
- 
-        <ul>
-          {this.renderTasks()}
-        </ul>
+          <div className="tasks">
+            <List>
+              {this.renderTasks()}
+            </List>
+          </div>
+        </div>
+       
       </div>
     );
   }
