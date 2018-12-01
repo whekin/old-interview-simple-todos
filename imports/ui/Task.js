@@ -42,7 +42,7 @@ export default class Task extends Component {
             this.props.showPrivateButton
             ? (
               <div className="task__ins">
-                <Tooltip title="to make this public">
+                <Tooltip title="make this public">
                   <Checkbox
                   readOnly
                   onClick={this.togglePrivate}
