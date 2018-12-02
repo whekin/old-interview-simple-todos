@@ -23,20 +23,23 @@ export default class Task extends Component {
     return (
       <ListItem divider={true}>
         <div className="task">
+        {
+          this.props.showPrivateButton
+          ? (
           <div className="task__main">
-          {
-            this.props.showPrivateButton
-            ? (
             <Checkbox
               readOnly
               checked={!!this.props.task.checked}
               onClick={this.toggleChecked}
               icon={<CheckCircleIconOutline />}
-              checkedIcon={<CheckCirleIcon />} /> )
-            : ''
+              checkedIcon={<CheckCirleIcon />} />
+          </div>)
+          : ''
           }
-
-          <strong>{this.props.task.username}</strong>: {this.props.task.text}
+          <div className="task__text">
+            <div>
+              <strong>{this.props.task.username}</strong>: {this.props.task.text}
+            </div>
           </div>
           {
             this.props.showPrivateButton
@@ -44,11 +47,11 @@ export default class Task extends Component {
               <div className="task__ins">
                 <Tooltip title="make this public">
                   <Checkbox
-                  readOnly
-                  onClick={this.togglePrivate}
-                  checked={!this.props.task.private}
-                  icon={<PublicIcon />}
-                  checkedIcon={<PublicIcon color="secondary" />} />
+                    readOnly
+                    onClick={this.togglePrivate}
+                    checked={!this.props.task.private}
+                    icon={<PublicIcon />}
+                    checkedIcon={<PublicIcon color="secondary" />} />
                 </Tooltip>
                 
                 <Tooltip title="delete">
