@@ -10,10 +10,12 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import PanoramaFishEye from '@material-ui/icons/PanoramaFishEye'
 import CheckCirleIcon from '@material-ui/icons/CheckCircle';
 import PublicIcon from '@material-ui/icons/Public';
 import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
 
 const styles = theme => ({
   zIndex: {
@@ -34,6 +36,12 @@ class Task extends Component {
     this.props.openConfirmDelete(this.props.task._id);
   }
   
+  editThisTask = () => {
+    const newText = window.prompt("Edit the task", this.props.task.text);
+    if (newText)
+      Meteor.call('tasks.setText', this.props.task._id, newText);
+  }
+
   togglePrivate = () => {
     Meteor.call('tasks.setPrivate', this.props.task._id, !this.props.task.private);
   }
@@ -62,7 +70,7 @@ class Task extends Component {
               readOnly
               checked={!!this.props.task.checked}
               onClick={this.toggleChecked}
-              icon={<CheckCircleIconOutline />}
+              icon={<PanoramaFishEye />}
               checkedIcon={<CheckCirleIcon />} />
           </div>)
           : ''
@@ -76,7 +84,6 @@ class Task extends Component {
             this.props.showPrivateButton
             ? (
               <div className="task__ins">
-
                 <IconButton
                    buttonRef={node => {
                     this.anchorEl = node;
@@ -138,6 +145,13 @@ class Task extends Component {
                         checked={!this.props.task.private}
                         icon={<PublicIcon />}
                         checkedIcon={<PublicIcon color="secondary" />} />
+                      </Tooltip>
+                    </MenuItem>
+                    <MenuItem onClick={this.handleClose}>
+                      <Tooltip title="edit">
+                        <IconButton onClick={this.editThisTask}>
+                          <EditIcon fontSize="small" />
+                        </IconButton>
                       </Tooltip>
                     </MenuItem>
                     <MenuItem onClick={this.handleClose}>

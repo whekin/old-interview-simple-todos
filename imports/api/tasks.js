@@ -59,6 +59,17 @@ Meteor.methods({
     if (task.owner !== this.userId)
       throw new Meteor.Error('not-authorized');
 
-    Tasks.update(taskId, { $set: { private: setToPrivate } })
+    Tasks.update(taskId, { $set: { private: setToPrivate } });
+  },
+  'tasks.setText'(taskId, text) {
+    check(taskId, String);
+    check(text, String);
+
+    const task = Tasks.findOne(taskId);
+    
+    if (task.owner !== this.userId)
+      throw new Meteor.Error('not-authorized');
+    
+      Tasks.update(taskId, { $set: { text: text } });
   }
 });

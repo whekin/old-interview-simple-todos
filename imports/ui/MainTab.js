@@ -32,6 +32,9 @@ const styles = theme => ({
   root: {
     width: "100%"
   },
+  list: {
+    
+  }
 });
 
 class FullWidthTabs extends React.Component {
@@ -120,7 +123,7 @@ class FullWidthTabs extends React.Component {
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}>
           <TabContainer>
-            <List>
+            <List className={classes.list}>
               {this.renderTasks({
                 sort: "own"
               })}
@@ -128,14 +131,14 @@ class FullWidthTabs extends React.Component {
            
           </TabContainer>
           <TabContainer>
-            <List>
+            <List className={classes.list}>
               {this.renderTasks({
                 sort: "completed"
               })}
             </List>
           </TabContainer>
           <TabContainer>
-            <List>
+            <List className={classes.list}>
               {this.renderTasks({
                 sort: "public"
               })}
