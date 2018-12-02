@@ -3,7 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Tasks } from '../api/tasks';
 import Bar from './Bar.js';
-import Task from './Task.js';
+import MainTab from './MainTab';
 import { TextField, List} from '@material-ui/core';
  
 // App component - represents the whole app
@@ -34,23 +34,6 @@ class App extends Component {
       hideCompleted: !this.state.hideCompleted
     });
   }
-
-  renderTasks() {
-    let filteredTasks = this.props.tasks;
-    if (this.state.hideCompleted)
-      filteredTasks = filteredTasks.filter(task => !task.checked);
-    
-    return filteredTasks.map(task => {
-      const currentUserId = this.props.currentUser && this.props.currentUser._id;
-      const showPrivateButton = task.owner === currentUserId;
-      return (
-        <Task
-          key={task._id}
-          task={task}
-          showPrivateButton={showPrivateButton} />
-      );
-    });
-  }
  
   render() {
     return (
@@ -79,25 +62,19 @@ class App extends Component {
               InputLabelProps={{
                 shrink: true,
               }} />
-            </form> : ''
-          }
-          <div className="tasks">
-            <List>
-              {this.renderTasks()}
-            </List>
-          </div>
+          </form> : ''
+        }
+        <div className="tasks">
+          <MainTab />
         </div>
       </div>
+    </div>
     );
   }
 }
 
 export default withTracker(() => {
-  Meteor.subscribe('tasks');
-
   return {
-    tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
-    incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
     currentUser: Meteor.user()
   };
 })(App);
