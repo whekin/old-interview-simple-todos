@@ -16,6 +16,9 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
+  "deleteUserAccount"(userId) {
+    Meteor.users.remove({ _id: userId });
+  },
   'tasks.insert'(text) {
     check(text, String);
 
@@ -71,5 +74,8 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
     
       Tasks.update(taskId, { $set: { text: text } });
+  },
+  'tasks.deleteAllOwnTasks'(userId) {
+    Tasks.remove({ owner: userId });
   }
 });

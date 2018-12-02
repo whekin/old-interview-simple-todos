@@ -1,21 +1,27 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-import { ListItem, IconButton, Checkbox, Tooltip } from '@material-ui/core';
+
+import {
+  ListItem,
+  IconButton,
+  Checkbox,
+  Tooltip,
+  ClickAwayListener,
+  Grow,
+  Paper,
+  Popper,
+  MenuItem,
+  MenuList
+} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import DeleteIcon from '@material-ui/icons/Delete'
-import CheckCircleIconOutline from '@material-ui/icons/CheckCircleOutline';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
+
 import PanoramaFishEye from '@material-ui/icons/PanoramaFishEye'
 import CheckCirleIcon from '@material-ui/icons/CheckCircle';
 import PublicIcon from '@material-ui/icons/Public';
 import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const styles = theme => ({
   zIndex: {

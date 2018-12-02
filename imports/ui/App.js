@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Tasks } from '../api/tasks';
 import Bar from './Bar.js';
 import MainTab from './MainTab';
-import { TextField, List} from '@material-ui/core';
+import { TextField, Typography } from '@material-ui/core';
  
-// App component - represents the whole app
 class App extends Component {
   state = {
     hideCompleted: false,
@@ -65,7 +64,10 @@ class App extends Component {
             </form> : ''
           }
           <div className="tasks">
-            <MainTab hideCompleted={this.state.hideCompleted}/>
+            {this.props.currentUser ?
+              <MainTab hideCompleted={this.state.hideCompleted}/>
+              : <Typography>Please, Sign in.</Typography>
+            }
           </div>
         </div>
       </div>
@@ -73,8 +75,9 @@ class App extends Component {
   }
 }
 
-export default withTracker(() => {
-  return {
-    currentUser: Meteor.user()
-  };
-})(App);
+export default withRouter(
+  withTracker(() => {
+    return {
+      currentUser: Meteor.user()
+    };
+})(App));

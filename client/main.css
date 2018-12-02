@@ -1,6 +1,5 @@
 body {
   font-family: 'Roboto';
-  min-height: 100vh;
 }
 
 .wrapper {
@@ -34,4 +33,14 @@ body {
 
 .new-task {
 
+}
+
+.AccountsControl form {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.AccountsControl form > * {
+  margin-bottom: 10px;
 }

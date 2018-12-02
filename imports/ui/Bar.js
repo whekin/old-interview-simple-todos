@@ -1,19 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import AccountsControl from './AccountsControl';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import AccountsUIWrapper from './AccountsUIWrapper';
-import { IconButton } from '@material-ui/core'
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Dialog from '@material-ui/core/Dialog';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
-import Switch from '@material-ui/core/Switch';
+
+import {
+  Typography,
+  IconButton,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Switch
+} from '@material-ui/core';
+
 import SettingsIcon from '@material-ui/icons/Settings';
 
 const styles = {
@@ -108,14 +111,13 @@ class Bar extends Component {
                       <Switch
                         disabled
                         onChange={this.handleToggle('sort')}
-                        checked={this.state.checked.indexOf('sort') !== -1}
-                      />
+                        checked={this.state.checked.indexOf('sort') !== -1} />
                     </ListItemSecondaryAction>
                   </ListItem>
                 </List>
               </div>
             </Dialog>
-            <AccountsUIWrapper />
+            <AccountsControl />
           </Toolbar>
         </AppBar>
       </div>

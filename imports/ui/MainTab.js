@@ -1,19 +1,21 @@
 import React from 'react';
+import SwipeableViews from 'react-swipeable-views';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import Task from './Task';
 import { Tasks } from '../api/tasks';
 import { withStyles } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import Snackbar from '@material-ui/core/Snackbar';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
+import {
+  Snackbar,
+  Button,
+  IconButton,
+  AppBar,
+  Tabs,
+  Tab,
+  List,
+  Typography
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
 function TabContainer({ children }) {
@@ -33,7 +35,7 @@ const styles = theme => ({
     width: "100%"
   },
   list: {
-    
+    paddingBottom: 200
   }
 });
 
@@ -128,7 +130,6 @@ class FullWidthTabs extends React.Component {
                 sort: "own"
               })}
             </List>
-           
           </TabContainer>
           <TabContainer>
             <List className={classes.list}>
