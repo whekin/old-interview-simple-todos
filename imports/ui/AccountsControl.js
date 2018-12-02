@@ -112,9 +112,10 @@ class AccountsControl extends Component {
   }
 
   handleDeleteAccount = () => {
-    this.handleLogout();
     Meteor.call('tasks.deleteAllOwnTasks');
-    Meteor.call('deleteUserAccount', Meteor.userId());
+    Meteor.call('deleteUserAccount');
+    
+    this.handleLogout();
   }
 
   handleSignUp = () => {
