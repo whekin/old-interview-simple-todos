@@ -76,6 +76,8 @@ Meteor.methods({
       Tasks.update(taskId, { $set: { text: text } });
   },
   'tasks.deleteAllOwnTasks'(userId) {
+    check(userId, String);
+
     Tasks.remove({ owner: userId });
   }
 });
