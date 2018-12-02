@@ -37,38 +37,38 @@ class App extends Component {
  
   render() {
     return (
-      <div className="container">
+      <div className="App container">
         <header>
           <Bar
             toggleHideCompleted={this.toggleHideCompleted}
             hideCompleted={this.state.hideCompleted} />
         </header>
-      <div className="wrapper">
-        { this.props.currentUser ?
-          <form
-            className="new-task"
-            onSubmit={this.handleSubmit}>
-            <TextField
-              label="New task"
-              placeholder="Type to add a new task"
-              helperText="Just do it!"
-              fullWidth
-              margin="normal"
-              variant="filled"
-              onChange={this.handleChange}
-              value={this.state.taskValue}
-              autoComplete="off"
-              name="taskValue"
-              InputLabelProps={{
-                shrink: true,
-              }} />
-          </form> : ''
-        }
-        <div className="tasks">
-          <MainTab hideCompleted={this.state.hideCompleted}/>
+        <div className="wrapper">
+          { this.props.currentUser ?
+            <form
+              className="new-task"
+              onSubmit={this.handleSubmit}>
+              <TextField
+                label="New task"
+                placeholder="Type to add a new task"
+                helperText="Just do it!"
+                fullWidth
+                margin="normal"
+                variant="filled"
+                onChange={this.handleChange}
+                value={this.state.taskValue}
+                autoComplete="off"
+                name="taskValue"
+                InputLabelProps={{
+                  shrink: true,
+                }} />
+            </form> : ''
+          }
+          <div className="tasks">
+            <MainTab hideCompleted={this.state.hideCompleted}/>
+          </div>
         </div>
       </div>
-    </div>
     );
   }
 }

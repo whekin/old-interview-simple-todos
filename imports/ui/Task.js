@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import CheckCirleIcon from '@material-ui/icons/CheckCircle';
 import PublicIcon from '@material-ui/icons/Public';
-import InfoIcon from '@material-ui/icons/Info'
+import InfoIcon from '@material-ui/icons/Info';
 import MenuIcon from '@material-ui/icons/MoreVert';
 
 const styles = theme => ({
@@ -31,7 +31,7 @@ class Task extends Component {
   }
 
   deleteThisTask = () => {
-   Meteor.call('tasks.remove', this.props.task._id);
+    this.props.openConfirmDelete(this.props.task._id);
   }
   
   togglePrivate = () => {
@@ -82,7 +82,7 @@ class Task extends Component {
                     this.anchorEl = node;
                   }}
                   onClick={this.handleToggle}
-                  aria-owns={open ? 'menu-list-grow' : undefined}
+                  aria-owns={this.state.open ? 'menu-list-grow' : undefined}
                   aria-haspopup="true">
                   <MenuIcon fontSize="small" />
                 </IconButton>
