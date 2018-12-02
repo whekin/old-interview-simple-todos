@@ -33,7 +33,7 @@ const styles = {
 
 class Bar extends Component {
   state = {
-    checked: [],
+    checked: ["sort"],
     open: false
   };
 
@@ -106,6 +106,7 @@ class Bar extends Component {
                     <ListItemText primary="Sort by date" />
                     <ListItemSecondaryAction>
                       <Switch
+                        disabled
                         onChange={this.handleToggle('sort')}
                         checked={this.state.checked.indexOf('sort') !== -1}
                       />

@@ -65,7 +65,7 @@ class App extends Component {
           </form> : ''
         }
         <div className="tasks">
-          <MainTab />
+          <MainTab hideCompleted={this.state.hideCompleted}/>
         </div>
       </div>
     </div>

@@ -12,9 +12,9 @@ import Tab from '@material-ui/core/Tab';
 import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 
-function TabContainer({ children, dir }) {
+function TabContainer({ children }) {
   return (
-    <Typography component="div" dir={dir} style={{ padding: 8 * 3 }}>
+    <Typography component="div" style={{ padding: 8 * 3 }}>
       {children}
     </Typography>
   );
@@ -22,7 +22,6 @@ function TabContainer({ children, dir }) {
 
 TabContainer.propTypes = {
   children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired,
 };
 
 const styles = theme => ({
@@ -44,16 +43,18 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
-  renderTasks(my) {
+  renderTasks(settings) {
     let filteredTasks = this.props.tasks;
     const currentUserId = this.props.currentUser && this.props.currentUser._id;
 
-    if (this.state.hideCompleted)
+    if (this.props.hideCompleted && settings.sort !== "completed")
       filteredTasks = filteredTasks.filter(task => !task.checked);
-    if (my)
+    if (settings.sort === "own")
       filteredTasks = filteredTasks.filter(task => task.owner === currentUserId);
-    else
-      filteredTasks = filteredTasks.filter(task => task.owner !== currentUserId);
+    else if (settings.sort === "completed")
+      filteredTasks = filteredTasks.filter(task => task.checked === true);
+    else if (settings.sort === "public")
+      filteredTasks = filteredTasks.filter(task => task.private !== true);
 
     return filteredTasks.map(task => {
       const showPrivateButton = task.owner === currentUserId;
@@ -68,7 +69,7 @@ class FullWidthTabs extends React.Component {
   }
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -78,26 +79,35 @@ class FullWidthTabs extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            fullWidth
-          >
+            fullWidth>
             <Tab label="My tasks" />
+            <Tab label="Completed" />
             <Tab label="Public tasks" />
           </Tabs>
         </AppBar>
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          <TabContainer dir={theme.direction}>
+          onChangeIndex={this.handleChangeIndex}>
+          <TabContainer>
             <List>
-              {this.renderTasks(true)}
+              {this.renderTasks({
+                sort: "own"
+              })}
             </List>
            
           </TabContainer>
-          <TabContainer dir={theme.direction}>
+          <TabContainer>
             <List>
-              {this.renderTasks(false)}
+              {this.renderTasks({
+                sort: "completed"
+              })}
+            </List>
+          </TabContainer>
+          <TabContainer>
+            <List>
+              {this.renderTasks({
+                sort: "public"
+              })}
             </List>
           </TabContainer>
         </SwipeableViews>
@@ -108,10 +118,9 @@ class FullWidthTabs extends React.Component {
 
 FullWidthTabs.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, { withTheme: true })(withTracker(() => {
+export default withStyles(styles)(withTracker(() => {
   Meteor.subscribe('tasks');
 
   return {
