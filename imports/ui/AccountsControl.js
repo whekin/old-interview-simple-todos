@@ -108,6 +108,8 @@ class AccountsControl extends Component {
     Meteor.loginWithGoogle({
       client_id: "1056331276070-ddri14rdi942kqjcu5g8dpmd30l9dev5.apps.googleusercontent.com",
       client_secret: "wVnPrDmR_w9XCGqt93QWD3uv"
+    }, () => {
+      Meteor.setUsername(Meteor.userId(), Meteor.user().services.google.name);
     });
   }
 

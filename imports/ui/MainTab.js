@@ -86,11 +86,11 @@ class FullWidthTabs extends React.Component {
 
     if (this.props.hideCompleted && settings.sort !== "completed")
       filteredTasks = filteredTasks.filter(task => !task.checked);
-    if (settings.sort === "own")
+    if (settings.sort === "own" || settings.sort === "completed")
       filteredTasks = filteredTasks.filter(task => task.owner === currentUserId);
-    else if (settings.sort === "completed")
+    if (settings.sort === "completed") {
       filteredTasks = filteredTasks.filter(task => task.checked === true);
-    else if (settings.sort === "public")
+    } else if (settings.sort === "public")
       filteredTasks = filteredTasks.filter(task => task.private !== true);
 
     return filteredTasks.map(task => {
