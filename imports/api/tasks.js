@@ -25,6 +25,9 @@ Meteor.methods({
     if (!this.userId)
       throw new Meteor.Error('not-authorized');
 
+    let username = Meteor.users.finOne(this.userId).username
+    if (username === undefined)
+      username = Meteor.users.findOne(this.userId).services.google.given_name;
     Tasks.insert({
       text,
       createdAt: new Date(),
@@ -32,7 +35,6 @@ Meteor.methods({
       username: Meteor.users.findOne(this.userId).username
     });
   },
-
   'tasks.remove'(taskId) {
     check(taskId, String);
 

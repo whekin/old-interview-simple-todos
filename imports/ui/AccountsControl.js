@@ -108,8 +108,6 @@ class AccountsControl extends Component {
     Meteor.loginWithGoogle({
       client_id: "1056331276070-ddri14rdi942kqjcu5g8dpmd30l9dev5.apps.googleusercontent.com",
       client_secret: "wVnPrDmR_w9XCGqt93QWD3uv"
-    }, () => {
-      Accounts.setUsername(Meteor.userId(), Meteor.user().services.google.name);
     });
   }
 
@@ -232,6 +230,13 @@ class AccountsControl extends Component {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const currentUser = Meteor.user();
+    let username = "login";
+    if (currentUser) {
+      username = currentUser.username;
+      if (username === undefined)
+        username = currentUser.services.google.given_name;
+    }
+    
     return (
       <div>
         <Button
@@ -239,8 +244,7 @@ class AccountsControl extends Component {
           aria-haspopup="true"
           variant="text"
           onClick={this.handleClick}>
-          {currentUser && currentUser.username}
-          {!currentUser && "login"}
+          {username}
           <AccountCircle className={classes.rightIcon} />
         </Button>
         <Popover
