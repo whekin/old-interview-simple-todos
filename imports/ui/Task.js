@@ -26,6 +26,10 @@ import DeleteIcon from '@material-ui/icons/Delete';
 const styles = theme => ({
   zIndex: {
     zIndex: 100
+  },
+  listItem: {
+    paddingLeft: 0,
+    paddingRight: 0
   }
 });
 
@@ -65,8 +69,10 @@ class Task extends Component {
   };
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <ListItem divider={true}>
+      <ListItem className={classes.listItem} divider={true}>
         <div className="task">
         {
           this.props.showPrivateButton
@@ -111,7 +117,7 @@ class Task extends Component {
           }
         </div>
         <Popper
-          className={this.props.classes.zIndex}
+          className={classes.zIndex}
           open={this.state.open}
           anchorEl={this.anchorEl}
           transition

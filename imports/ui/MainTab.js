@@ -35,6 +35,8 @@ const styles = theme => ({
     width: "100%"
   },
   list: {
+    padding: 5,
+    paddingTop: 10,
     paddingBottom: 200
   }
 });
@@ -124,27 +126,21 @@ class FullWidthTabs extends React.Component {
         <SwipeableViews
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}>
-          <TabContainer>
-            <List className={classes.list}>
-              {this.renderTasks({
-                sort: "own"
-              })}
-            </List>
-          </TabContainer>
-          <TabContainer>
-            <List className={classes.list}>
-              {this.renderTasks({
-                sort: "completed"
-              })}
-            </List>
-          </TabContainer>
-          <TabContainer>
-            <List className={classes.list}>
-              {this.renderTasks({
-                sort: "public"
-              })}
-            </List>
-          </TabContainer>
+          <List className={classes.list}>
+            {this.renderTasks({
+              sort: "own"
+            })}
+          </List>
+          <List className={classes.list}>
+            {this.renderTasks({
+              sort: "completed"
+            })}
+          </List>
+          <List className={classes.list}>
+            {this.renderTasks({
+              sort: "public"
+            })}
+          </List>
         </SwipeableViews>
         <Snackbar
           anchorOrigin={{
