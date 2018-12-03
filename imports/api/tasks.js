@@ -26,7 +26,7 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
 
     let username = Meteor.users.finOne(this.userId).username
-    if (username === undefined)
+    if (Meteor.users.findOne(this.userId).services.google)
       username = Meteor.users.findOne(this.userId).services.google.given_name;
     Tasks.insert({
       text,

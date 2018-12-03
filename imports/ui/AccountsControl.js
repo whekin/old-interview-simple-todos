@@ -233,7 +233,7 @@ class AccountsControl extends Component {
     let username = "login";
     if (currentUser) {
       username = currentUser.username;
-      if (username === undefined)
+      if (currentUser.services.google)
         username = currentUser.services.google.given_name;
     }
     
