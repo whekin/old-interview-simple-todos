@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, withRouter } from 'react-router-dom';
+import { Route, withRouter, Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import {
@@ -198,6 +198,7 @@ class AccountsControl extends Component {
           <Button variant="contained" type="submit">
             Sign Up
           </Button>
+          <Link to="/">Back to log in</Link>
         </form>
       )} />
     </div>
@@ -239,11 +240,9 @@ class AccountsControl extends Component {
     const currentUser = Meteor.user();
     let username = "login";
 
-   
     if (currentUser)
       username = currentUser.username || (currentUser.profile ? currentUser.profile.name : "unknown");
       
-    
     return (
       <div>
         <Button
