@@ -233,7 +233,7 @@ class AccountsControl extends Component {
     let username = "login";
     if (currentUser) {
       username = currentUser.username;
-      if (currentUser.services.google)
+      if (currentUser.services.hasOwnProperty("google"))
         username = currentUser.services.google.given_name;
     }
     

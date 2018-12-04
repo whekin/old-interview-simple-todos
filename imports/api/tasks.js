@@ -25,14 +25,15 @@ Meteor.methods({
     if (!this.userId)
       throw new Meteor.Error('not-authorized');
 
-    let username = Meteor.users.finOne(this.userId).username
-    if (Meteor.users.findOne(this.userId).services.google)
+    let username = Meteor.users.findOne(this.userId).username;
+    if (Meteor.users.findOne(this.userId).services.hasOwnProperty("google"));
       username = Meteor.users.findOne(this.userId).services.google.given_name;
+
     Tasks.insert({
       text,
       createdAt: new Date(),
       owner: this.userId,
-      username: Meteor.users.findOne(this.userId).username
+      username
     });
   },
   'tasks.remove'(taskId) {
