@@ -116,11 +116,10 @@ class AccountsControl extends Component {
   }
 
   handleDeleteAccount = () => {
-    let sure = confirm("Deliting this account. Are you sure? Data cannot be restored");
+    let sure = confirm("Deleting this account. Are you sure? Data cannot be restored!");
 
     if (sure) {
-      Meteor.call('tasks.deleteAllOwnTasks');
-      Meteor.call('accounts.deleteCurrentAccount');
+      Meteor.call('accounts.deleteCurrentAccount', true);
       
       this.handleLogout();
     }
@@ -240,12 +239,10 @@ class AccountsControl extends Component {
     const currentUser = Meteor.user();
     let username = "login";
 
-    if (currentUser) {
-      if (currentUser.hasOwnProperty("username"))
-        username = currentUser.username;
-      else if (currentUser.hasOwnProperty("profile"))
-        username = currentUser.profile.name;
-    }
+   
+    if (currentUser)
+      username = currentUser.username || (currentUser.profile ? currentUser.profile.name : "unknown");
+      
     
     return (
       <div>

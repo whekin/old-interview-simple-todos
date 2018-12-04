@@ -1,10 +1,14 @@
 import { Meteor } from 'meteor/meteor';
 
 Meteor.methods({
-  'accounts.deleteCurrentAccount'() {
+  'accounts.deleteCurrentAccount'(isDeleteTasks) {
     if (!this.userId)
       throw new Meteor.Error('not-authorized');
 
-    Meteor.users.remove({ _id: this.userId });
+    const isUserDeleted = Meteor.users.remove({ _id: this.userId });
+    
+    if (isUserDeleted && isDeleteTasks) {
+      Meteor.call("tasks.deleteAllOwnTasks");
+    }
   }
 });

@@ -23,12 +23,7 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
 
     const user = Meteor.users.findOne(this.userId);
-    let username = "unknow";
-    
-    if (user.hasOwnProperty("username"))
-      username = user.username;
-    else if (user.hasOwnProperty("profile"))
-      username = user.profile.name;
+    let username = user.username || (user.profile ? user.profile.name : "unknown");
     
     Tasks.insert({
       text,
@@ -41,6 +36,10 @@ Meteor.methods({
     check(taskId, String);
 
     const task = Tasks.findOne(taskId);
+
+    if (!task)
+      throw new Meteor.Error('Wrong task\' id');
+
     if (task.private && task.owner !== this.userId)
       throw new Meteor.Error('not-authorized');
 
@@ -52,6 +51,10 @@ Meteor.methods({
     check(setChecked, Boolean);
 
     const task = Tasks.findOne(taskId);
+
+    if (!task)
+      throw new Meteor.Error('Wrong task\' id');
+
     if (task.private && task.owner !== this.userId)
       throw new Meteor.Error('not-authorized');
 
@@ -63,6 +66,9 @@ Meteor.methods({
 
     const task = Tasks.findOne(taskId);
 
+    if (!task)
+      throw new Meteor.Error('Wrong task\' id');
+
     if (task.owner !== this.userId)
       throw new Meteor.Error('not-authorized');
 
@@ -72,14 +78,22 @@ Meteor.methods({
     check(taskId, String);
     check(text, String);
 
+    if (!this.userId)
+      throw new Meteor.Error('not-authorized');
+    
     const task = Tasks.findOne(taskId);
     
+    if (!task)
+      throw new Meteor.Error('Wrong task\' id');
+
     if (task.owner !== this.userId)
       throw new Meteor.Error('not-authorized');
     
       Tasks.update(taskId, { $set: { text: text } });
   },
   'tasks.deleteAllOwnTasks'() {
+    if (!this.userId)
+      throw new Meteor.Error('not-authorized');
     Tasks.remove({ owner: this.userId });
   }
 });
