@@ -12,7 +12,8 @@ import {
   Button,
   Popover,
   List,
-  ListItem
+  ListItem,
+  Typography
 } from '@material-ui/core';
 import {
   Visibility,
@@ -245,8 +246,9 @@ class AccountsControl extends Component {
           aria-owns={open ? 'simple-popper' : undefined}
           aria-haspopup="true"
           variant="text"
+          color="inherit"
           onClick={this.handleClick}>
-          {username}
+          <Typography color="inherit">{username}</Typography>
           <AccountCircle className={classes.rightIcon} />
         </Button>
         <Popover

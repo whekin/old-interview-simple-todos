@@ -3,9 +3,22 @@ import { withRouter } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 import Bar from './Bar.js';
+import Settings from './Settings.js';
 import MainTab from './MainTab';
 import { TextField, Typography } from '@material-ui/core';
- 
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#009688'
+    },
+    secondary: {
+      main: '#ffea00'
+    }
+  },
+});
+
 class App extends Component {
   state = {
     hideCompleted: false,
@@ -36,41 +49,43 @@ class App extends Component {
  
   render() {
     return (
-      <div className="App container">
-        <header>
-          <Bar
-            toggleHideCompleted={this.toggleHideCompleted}
-            hideCompleted={this.state.hideCompleted} />
-        </header>
-        <div className="wrapper">
-          { this.props.currentUser ?
-            <form
-              className="new-task"
-              onSubmit={this.handleSubmit}>
-              <TextField
-                label="New task"
-                placeholder="Type to add a new task"
-                helperText="Just do it!"
-                fullWidth
-                margin="normal"
-                variant="filled"
-                onChange={this.handleChange}
-                value={this.state.taskValue}
-                autoComplete="off"
-                name="taskValue"
-                InputLabelProps={{
-                  shrink: true,
-                }} />
-            </form> : ''
-          }
-          <div className="tasks">
-            {this.props.currentUser ?
-              <MainTab hideCompleted={this.state.hideCompleted}/>
-              : <Typography>Please, Sign in.</Typography>
+      <MuiThemeProvider theme={theme}>
+        <div className="App container">
+          <header>
+            <Bar />
+          </header>
+          <div className="wrapper">
+            { this.props.currentUser ?
+              <form
+                className="new-task"
+                onSubmit={this.handleSubmit}>
+                <TextField
+                  label="New task"
+                  placeholder="Type to add a new task"
+                  fullWidth
+                  margin="normal"
+                  variant="filled"
+                  onChange={this.handleChange}
+                  value={this.state.taskValue}
+                  autoComplete="off"
+                  name="taskValue"
+                  InputLabelProps={{
+                    shrink: true,
+                  }} />
+              </form> : ''
             }
+            <div className="tasks">
+              {this.props.currentUser ?
+                <MainTab hideCompleted={this.state.hideCompleted}/>
+                : <Typography>Please, Sign in.</Typography>
+              }
+            </div>
+            <Settings
+              toggleHideCompleted={this.toggleHideCompleted}
+              hideCompleted={this.state.hideCompleted} />
           </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
