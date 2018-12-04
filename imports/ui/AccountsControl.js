@@ -233,7 +233,8 @@ class AccountsControl extends Component {
     let username = "login";
     if (currentUser) {
       username = currentUser.username;
-      if (currentUser.services.hasOwnProperty("google"))
+      console.log(Meteor.users.findOne(currentUser._id));
+      if (false)
         username = currentUser.services.google.given_name;
     }
     
