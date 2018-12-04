@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
-
+import moment from 'moment';
 import {
   ListItem,
   IconButton,
@@ -69,7 +69,7 @@ class Task extends Component {
   };
 
   render() {
-    const { classes } = this.props;
+    const { classes, task } = this.props;
 
     return (
       <ListItem className={classes.listItem} divider={true}>
@@ -108,7 +108,7 @@ class Task extends Component {
               </div> )
             : (
             <div className="task__ins">
-              <Tooltip title={`user: ${this.props.task.username}`}>
+              <Tooltip title={`user: ${task.username}`}>
                 <IconButton onClick={() => {}}>
                   <InfoIcon fontSize="small" />
                 </IconButton>
@@ -134,12 +134,9 @@ class Task extends Component {
                       <Tooltip title={
                         <div>
                           <div>{
-                            `date: ${this.props.task.createdAt.getDate()}.
-                            ${this.props.task.createdAt.getMonth()}.
-                            ${this.props.task.createdAt.getFullYear()}
-                          `}</div>
+                            `date: ${moment(this.props.task.createdAt).format('DD:MM:YY')}`}</div>
                           <div>
-                            {`time: ${this.props.task.createdAt.getHours()}:${this.props.task.createdAt.getMinutes()}`}
+                            {`time: ${moment(this.props.task.createdAt).format('h:mm:ss')}`}
                           </div>
                         </div>
                       }>
