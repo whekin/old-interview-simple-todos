@@ -231,11 +231,12 @@ class AccountsControl extends Component {
     const open = Boolean(anchorEl);
     const currentUser = Meteor.user();
     let username = "login";
+
     if (currentUser) {
-      username = currentUser.username;
-      console.log(Meteor.users.findOne(currentUser._id));
-      if (false)
-        username = currentUser.services.google.given_name;
+      if (currentUser.hasOwnProperty("username"))
+        username = currentUser.username;
+      else if (currentUser.hasOwnProperty("profile"))
+        username = currentUser.profile.name;
     }
     
     return (

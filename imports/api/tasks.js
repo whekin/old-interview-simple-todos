@@ -25,10 +25,14 @@ Meteor.methods({
     if (!this.userId)
       throw new Meteor.Error('not-authorized');
 
-    let username = Meteor.users.findOne(this.userId).username;
-    if (Meteor.users.findOne(this.userId).services.hasOwnProperty("google"));
-      username = Meteor.users.findOne(this.userId).services.google.given_name;
-
+    const user = Meteor.users.findOne(this.userId);
+    let username = "unknow";
+    
+    if (user.hasOwnProperty("username"))
+      username = user.username;
+    else if (user.hasOwnProperty("profile"))
+      username = user.profile.name;
+    
     Tasks.insert({
       text,
       createdAt: new Date(),
