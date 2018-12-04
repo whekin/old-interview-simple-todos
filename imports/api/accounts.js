@@ -6,6 +6,6 @@ console.log("I am. (accounts.js)");
 
 Meteor.methods({
   "deleteUserAccount"() {
-    Meteor.users.remove({ _id: Meteor.userId() });
+    Meteor.users.remove({ _id: this.userId });
   }
-})
+});
