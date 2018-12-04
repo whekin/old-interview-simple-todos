@@ -110,6 +110,9 @@ class AccountsControl extends Component {
       client_id: "1056331276070-ddri14rdi942kqjcu5g8dpmd30l9dev5.apps.googleusercontent.com",
       client_secret: "wVnPrDmR_w9XCGqt93QWD3uv"
     });
+
+    this.handleClose();
+    this.clearForm();
   }
 
   handleDeleteAccount = () => {
