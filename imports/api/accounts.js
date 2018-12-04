@@ -1,11 +1,12 @@
 import { Meteor } from 'meteor/meteor';
-import { Mongo } from 'meteor/mongo';
-import { check } from 'meteor/check';
 
 console.log("I am. (accounts.js)");
 
 Meteor.methods({
-  "deleteUserAccount"() {
+  'accounts.deleteCurrentAccount'() {
+    if (!this.userId)
+      throw new Meteor.Error('not-authorized');
+
     Meteor.users.remove({ _id: this.userId });
   }
 });

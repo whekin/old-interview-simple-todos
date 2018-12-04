@@ -16,9 +16,6 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'deleteUserAccount'() {
-    Meteor.users.remove({ _id: this.userId });
-  },
   'tasks.insert'(text) {
     check(text, String);
 
