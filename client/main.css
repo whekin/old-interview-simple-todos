@@ -8,7 +8,7 @@ body {
 }
 
 .tasks {
-  
+
 }
 
 .task {
@@ -43,4 +43,31 @@ body {
 
 .AccountsControl form > * {
   margin-bottom: 10px;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition-duration: 1s;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  animation: exit 0.7s forwards;
+}
+
+@keyframes exit {
+  50% {
+    opacity: 0;
+  }
+  to {
+    height: 0;
+    opacity: 0;
+  }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import SwipeableViews from 'react-swipeable-views';
 import PropTypes from 'prop-types';
 import { Meteor } from 'meteor/meteor';
@@ -43,9 +44,7 @@ const styles = theme => ({
 
 class FullWidthTabs extends React.Component {
   state = {
-    value: 0,
-    open: false,
-    idDelete: 0
+    value: 0
   };
 
   handleChange = (event, value) => {
@@ -56,30 +55,6 @@ class FullWidthTabs extends React.Component {
     this.setState({ value: index });
   };
 
-  handleClose = (event, reason) => {
-    if (reason === 'clickaway')
-      return;
-
-    Meteor.call('tasks.remove', this.state.idDelete);
-
-    this.setState({
-      open: false
-    });
-  }
-
-  cancelDelete = () => {
-    this.setState({
-      open: false
-    });
-  }
-
-  openConfirmDelete = id => {
-    this.setState({
-      open: true,
-      idDelete: id
-    });
-  }
-
   renderTasks(settings) {
     let filteredTasks = this.props.tasks;
     const currentUserId = this.props.currentUser && this.props.currentUser._id;
@@ -88,22 +63,35 @@ class FullWidthTabs extends React.Component {
       filteredTasks = filteredTasks.filter(task => !task.checked);
     if (settings.sort === "own" || settings.sort === "completed")
       filteredTasks = filteredTasks.filter(task => task.owner === currentUserId);
-    if (settings.sort === "completed") {
+    if (settings.sort === "completed")
       filteredTasks = filteredTasks.filter(task => task.checked === true);
-    } else if (settings.sort === "public")
+    else if (settings.sort === "public")
       filteredTasks = filteredTasks.filter(task => task.private !== true);
 
     return filteredTasks.map(task => {
       const showPrivateButton = task.owner === currentUserId;
 
       return (
-        <Task
-          key={task._id}
-          task={task}
-          showPrivateButton={showPrivateButton}
-          openConfirmDelete={this.openConfirmDelete} />
+        <CSSTransition
+          timeout={1500}
+          classNames="fade"
+          key={task._id}>
+          <Task showPrivateButton={showPrivateButton} task={task} />
+        </CSSTransition>
       );
     });
+  }
+
+  tabElRender(type) {
+    return(
+      <List className={this.props.classes.list}>
+        <TransitionGroup>
+          {this.renderTasks({
+            sort: type
+          })}
+        </TransitionGroup>
+      </List>
+    );
   }
 
   render() {
@@ -126,47 +114,10 @@ class FullWidthTabs extends React.Component {
         <SwipeableViews
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}>
-          <List className={classes.list}>
-            {this.renderTasks({
-              sort: "own"
-            })}
-          </List>
-          <List className={classes.list}>
-            {this.renderTasks({
-              sort: "completed"
-            })}
-          </List>
-          <List className={classes.list}>
-            {this.renderTasks({
-              sort: "public"
-            })}
-          </List>
+          {this.tabElRender("own")}
+          {this.tabElRender("completed")}
+          {this.tabElRender("public")}
         </SwipeableViews>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          open={this.state.open}
-          autoHideDuration={2000}
-          onClose={this.handleClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message={<span id="message-id">One deleted</span>}
-          action={[
-            <Button key="undo" color="secondary" size="small" onClick={this.cancelDelete}>
-              UNDO
-            </Button>,
-            <IconButton
-              key="close"
-              aria-label="Close"
-              color="inherit"
-              onClick={this.handleClose}>
-              <CloseIcon />
-            </IconButton>
-          ]}
-        />
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ReactHeight } from 'react-height';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
 import {
@@ -35,7 +36,8 @@ const styles = theme => ({
 
 class Task extends Component {
   state = {
-    open: false
+    open: false,
+    height: "0px"
   }
 
   toggleChecked = () => {
@@ -43,7 +45,7 @@ class Task extends Component {
   }
 
   deleteThisTask = () => {
-    this.props.openConfirmDelete(this.props.task._id);
+    Meteor.call('tasks.remove', this.props.task._id);
   }
   
   editThisTask = () => {
@@ -68,115 +70,130 @@ class Task extends Component {
     this.setState({ open: false });
   };
 
+  handleInfo = event => {
+    const { dueDate } = this.props.task;
+
+    if (dueDate)
+      alert(moment(dueDate).fromNow());
+    else
+      alert("Date of due task isn't indicated");
+  }
+
   render() {
     const { classes, task } = this.props;
-
     return (
-      <ListItem className={classes.listItem} divider={true}>
-        <div className="task">
-        {
-          this.props.showPrivateButton
-          ? (
-          <div className="task__main">
-            <Checkbox
-              readOnly
-              checked={!!this.props.task.checked}
-              onClick={this.toggleChecked}
-              icon={<PanoramaFishEye />}
-              checkedIcon={<CheckCirleIcon />} />
-          </div>)
-          : ''
-          }
-          <div className="task__text">
-            <div>
-              {this.props.task.text}
+      <div style={{height: this.state.height}}>
+        <ReactHeight onHeightReady={height => { this.setState({ height }) }}>
+          <ListItem
+            className={classes.listItem}
+            divider={true}>
+            
+            <div className="task">
+            {
+              this.props.showPrivateButton
+              ? (
+              <div className="task__main">
+                <Checkbox
+                  readOnly
+                  checked={!!this.props.task.checked}
+                  onClick={this.toggleChecked}
+                  icon={<PanoramaFishEye />}
+                  checkedIcon={<CheckCirleIcon />} />
+              </div>)
+              : ''
+              }
+              <div className="task__text">
+                <div>
+                  {this.props.task.text}
+                </div>
+              </div>
+              {
+                this.props.showPrivateButton
+                ? (
+                  <div className="task__ins">
+                    <IconButton
+                      buttonRef={node => {
+                        this.anchorEl = node;
+                      }}
+                      onClick={this.handleToggle}
+                      aria-owns={this.state.open ? 'menu-list-grow' : undefined}
+                      aria-haspopup="true">
+                      <MenuIcon fontSize="small" />
+                    </IconButton>
+                  </div> )
+                : (
+                <div className="task__ins">
+                  <Tooltip title={`user: ${task.username}`}>
+                    <IconButton onClick={() => {}}>
+                      <InfoIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </div> )
+              }
             </div>
-          </div>
-          {
-            this.props.showPrivateButton
-            ? (
-              <div className="task__ins">
-                <IconButton
-                   buttonRef={node => {
-                    this.anchorEl = node;
-                  }}
-                  onClick={this.handleToggle}
-                  aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                  aria-haspopup="true">
-                  <MenuIcon fontSize="small" />
-                </IconButton>
-              </div> )
-            : (
-            <div className="task__ins">
-              <Tooltip title={`user: ${task.username}`}>
-                <IconButton onClick={() => {}}>
-                  <InfoIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </div> )
-          }
-        </div>
-        <Popper
-          className={classes.zIndex}
-          open={this.state.open}
-          anchorEl={this.anchorEl}
-          transition
-          disablePortal>
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              id="menu-list-grow"
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
-              <Paper>
-                <ClickAwayListener onClickAway={this.handleClose}>
-                  <MenuList>
-                    <MenuItem>
-                      <Tooltip title={
-                        <div>
-                          <div>{
-                            `date: ${moment(this.props.task.createdAt).format('DD:MM:YY')}`}</div>
-                          <div>
-                            {`time: ${moment(this.props.task.createdAt).format('h:mm:ss')}`}
-                          </div>
-                        </div>
-                      }>
-                        <IconButton
-                          onClick={() => {}}>
-                          <InfoIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </MenuItem>
-                    <MenuItem >
-                    <Tooltip title="make this public">
-                      <Checkbox
-                        readOnly
-                        onClick={this.togglePrivate}
-                        checked={!this.props.task.private}
-                        icon={<PublicIcon />}
-                        checkedIcon={<PublicIcon color="secondary" />} />
-                      </Tooltip>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClose}>
-                      <Tooltip title="edit">
-                        <IconButton onClick={this.editThisTask}>
-                          <EditIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </MenuItem>
-                    <MenuItem onClick={this.handleClose}>
-                      <Tooltip title="delete">
-                        <IconButton onClick={this.deleteThisTask}>
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </MenuItem>
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
-        </Popper>
-      </ListItem>
+            <Popper
+              className={classes.zIndex}
+              open={this.state.open}
+              anchorEl={this.anchorEl}
+              transition
+              disablePortal>
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}>
+                  <Paper>
+                    <ClickAwayListener onClickAway={this.handleClose}>
+                      <MenuList>
+                        <MenuItem>
+                          <Tooltip title={
+                            <div>
+                              <div>{
+                                `date: ${moment(this.props.task.createdAt).format('DD:MM:YY')}`}</div>
+                              <div>
+                                {`time: ${moment(this.props.task.createdAt).format('h:mm:ss')}`}
+                              </div>
+                            </div>
+                          }>
+                            <IconButton
+                              onClick={this.handleInfo}>
+                              <InfoIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </MenuItem>
+                        <MenuItem >
+                        <Tooltip title="make this public">
+                          <Checkbox
+                            readOnly
+                            onClick={this.togglePrivate}
+                            checked={!this.props.task.private}
+                            icon={<PublicIcon />}
+                            checkedIcon={<PublicIcon color="secondary" />} />
+                          </Tooltip>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleClose}>
+                          <Tooltip title="edit">
+                            <IconButton onClick={this.editThisTask}>
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </MenuItem>
+                        <MenuItem onClick={this.handleClose}>
+                          <Tooltip title="delete">
+                            <IconButton onClick={this.deleteThisTask}>
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </ListItem>
+        </ReactHeight>
+      </div>
     );
   }
 }

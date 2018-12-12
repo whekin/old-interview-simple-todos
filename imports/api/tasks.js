@@ -16,7 +16,7 @@ if (Meteor.isServer) {
 }
 
 Meteor.methods({
-  'tasks.insert'(text) {
+  'tasks.insert'(text, dueDate) {
     check(text, String);
 
     if (!this.userId)
@@ -29,7 +29,8 @@ Meteor.methods({
       text,
       createdAt: new Date(),
       owner: this.userId,
-      username
+      username,
+      dueDate
     });
   },
   'tasks.remove'(taskId) {

@@ -7,6 +7,7 @@ import Settings from './Settings.js';
 import MainTab from './MainTab';
 import { TextField, Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { parser } from '../../imports/parser';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,7 +35,10 @@ class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    Meteor.call('tasks.insert', this.state.taskValue.trim());
+    let dueDate;
+    dueDate = parser(this.state.taskValue.trim());
+    console.log(dueDate);
+    Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate);
 
     this.setState({
       taskValue: ""
