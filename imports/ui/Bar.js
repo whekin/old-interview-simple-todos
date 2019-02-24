@@ -14,7 +14,7 @@ const styles = {
     flexGrow: 1
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   }
 };
 
@@ -38,7 +38,7 @@ class Bar extends Component {
 }
 
 Bar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(Bar);

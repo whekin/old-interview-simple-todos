@@ -8,30 +8,24 @@ import Task from './Task';
 import { Tasks } from '../api/tasks';
 import { withStyles } from '@material-ui/core/styles';
 import {
-  Snackbar,
-  Button,
-  IconButton,
   AppBar,
   Tabs,
   Tab,
   List,
   Typography
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 
-function TabContainer({ children }) {
-  return (
-    <Typography component="div" style={{ padding: 8 * 3 }}>
-      {children}
-    </Typography>
-  );
-}
+const TabContainer = ({ children }) => (
+  <Typography component="div" style={{ padding: 8 * 3 }}>
+    {children}
+  </Typography>
+);
 
 TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired
 };
 
-const styles = theme => ({
+const styles = () => ({
   root: {
     width: "100%"
   },
@@ -73,7 +67,7 @@ class FullWidthTabs extends React.Component {
 
       return (
         <CSSTransition
-          timeout={1500}
+          timeout={700}
           classNames="fade"
           key={task._id}>
           <Task showPrivateButton={showPrivateButton} task={task} />
@@ -83,7 +77,7 @@ class FullWidthTabs extends React.Component {
   }
 
   tabElRender(type) {
-    return(
+    return (
       <List className={this.props.classes.list}>
         <TransitionGroup>
           {this.renderTasks({
@@ -124,7 +118,7 @@ class FullWidthTabs extends React.Component {
 }
 
 FullWidthTabs.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(withTracker(() => {

@@ -6,9 +6,9 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized');
 
     const isUserDeleted = Meteor.users.remove({ _id: this.userId });
-    
-    if (isUserDeleted && isDeleteTasks) {
+
+    if (isUserDeleted && isDeleteTasks)
       Meteor.call("tasks.deleteAllOwnTasks");
-    }
+
   }
 });

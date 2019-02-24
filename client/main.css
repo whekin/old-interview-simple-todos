@@ -24,7 +24,12 @@ body {
 .task__text {
   flex-basis: 100%;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.task__dueDate {
+  margin-top: 10px;
 }
 
 .task__ins {

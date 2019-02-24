@@ -5,7 +5,7 @@ import { Random } from 'meteor/random';
 import { Tasks } from './tasks.js';
 import { assert } from 'chai';
 
-if (Meteor.isServer) {
+if (Meteor.isServer)
   describe('Tasks', () => {
     describe('methods', () => {
       const userId = Random.id();
@@ -27,7 +27,6 @@ if (Meteor.isServer) {
 
         deleteTask.apply(invocation, [taskId]);
         assert.equal(Tasks.find().count(), 0);
-      })
-    })
-  })
-}
+      });
+    });
+  });

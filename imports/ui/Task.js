@@ -12,11 +12,24 @@ import {
   Paper,
   Popper,
   MenuItem,
-  MenuList
+  MenuList,
+  Chip
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-import PanoramaFishEye from '@material-ui/icons/PanoramaFishEye'
+/*
+ import {
+  PanoramaFishEye,
+  CheckCirleIcon,
+  PublicIcon,
+  InfoIcon,
+  MenuIcon,
+  EditIcon,
+  DeleteIcon
+} from '@material-ui/icons';
+ */
+
+import PanoramaFishEye from '@material-ui/icons/PanoramaFishEye';
 import CheckCirleIcon from '@material-ui/icons/CheckCircle';
 import PublicIcon from '@material-ui/icons/Public';
 import InfoIcon from '@material-ui/icons/Info';
@@ -31,6 +44,14 @@ const styles = theme => ({
   listItem: {
     paddingLeft: 0,
     paddingRight: 0
+  },
+  chip: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
+  },
+  dueDate: {
+    background: theme.palette.secondary
   }
 });
 
@@ -47,7 +68,7 @@ class Task extends Component {
   deleteThisTask = () => {
     Meteor.call('tasks.remove', this.props.task._id);
   }
-  
+
   editThisTask = () => {
     const newText = window.prompt("Edit the task", this.props.task.text);
     if (newText)
@@ -63,14 +84,14 @@ class Task extends Component {
   };
 
   handleClose = event => {
-    if (this.anchorEl.contains(event.target)) {
+    if (this.anchorEl.contains(event.target))
       return;
-    }
+
 
     this.setState({ open: false });
   };
 
-  handleInfo = event => {
+  handleInfo = () => {
     const { dueDate } = this.props.task;
 
     if (dueDate)
@@ -82,53 +103,67 @@ class Task extends Component {
   render() {
     const { classes, task } = this.props;
     return (
-      <div style={{height: this.state.height}}>
-        <ReactHeight onHeightReady={height => { this.setState({ height }) }}>
+      <div style={{ height: this.state.height }}>
+        <ReactHeight onHeightReady={height => {
+          this.setState({ height });
+        }}>
           <ListItem
             className={classes.listItem}
             divider={true}>
-            
+
             <div className="task">
-            {
-              this.props.showPrivateButton
-              ? (
-              <div className="task__main">
-                <Checkbox
-                  readOnly
-                  checked={!!this.props.task.checked}
-                  onClick={this.toggleChecked}
-                  icon={<PanoramaFishEye />}
-                  checkedIcon={<CheckCirleIcon />} />
-              </div>)
-              : ''
+              {
+                this.props.showPrivateButton
+                  ? (
+                    <div className="task__main">
+                      <Checkbox
+                        readOnly
+                        checked={Boolean(this.props.task.checked)}
+                        onClick={this.toggleChecked}
+                        icon={<PanoramaFishEye />}
+                        checkedIcon={<CheckCirleIcon />} />
+                    </div>)
+                  : ''
               }
               <div className="task__text">
                 <div>
                   {this.props.task.text}
                 </div>
+                { task.dueDate ?
+                  <div className="task__dueDate">
+                    <Chip
+                      className={
+                        task.dueDate < new Date() ?
+                          classes.dueDate :
+                          ""
+                      }
+                      label={moment(task.dueDate).calendar()}/>
+                  </div>
+                  : ""
+                }
               </div>
               {
                 this.props.showPrivateButton
-                ? (
-                  <div className="task__ins">
-                    <IconButton
-                      buttonRef={node => {
-                        this.anchorEl = node;
-                      }}
-                      onClick={this.handleToggle}
-                      aria-owns={this.state.open ? 'menu-list-grow' : undefined}
-                      aria-haspopup="true">
-                      <MenuIcon fontSize="small" />
-                    </IconButton>
-                  </div> )
-                : (
-                <div className="task__ins">
-                  <Tooltip title={`user: ${task.username}`}>
-                    <IconButton onClick={() => {}}>
-                      <InfoIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                </div> )
+                  ? (
+                    <div className="task__ins">
+                      <IconButton
+                        buttonRef={node => {
+                          this.anchorEl = node;
+                        }}
+                        onClick={this.handleToggle}
+                        aria-owns={this.state.open ? 'menu-list-grow' : null}
+                        aria-haspopup="true">
+                        <MenuIcon fontSize="small" />
+                      </IconButton>
+                    </div> )
+                  : (
+                    <div className="task__ins">
+                      <Tooltip title={`user: ${task.username}`}>
+                        <IconButton>
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </div> )
               }
             </div>
             <Popper
@@ -162,13 +197,13 @@ class Task extends Component {
                           </Tooltip>
                         </MenuItem>
                         <MenuItem >
-                        <Tooltip title="make this public">
-                          <Checkbox
-                            readOnly
-                            onClick={this.togglePrivate}
-                            checked={!this.props.task.private}
-                            icon={<PublicIcon />}
-                            checkedIcon={<PublicIcon color="secondary" />} />
+                          <Tooltip title="make this public">
+                            <Checkbox
+                              readOnly
+                              onClick={this.togglePrivate}
+                              checked={!this.props.task.private}
+                              icon={<PublicIcon />}
+                              checkedIcon={<PublicIcon color="secondary" />} />
                           </Tooltip>
                         </MenuItem>
                         <MenuItem onClick={this.handleClose}>

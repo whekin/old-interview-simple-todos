@@ -1,23 +1,35 @@
-const codeExpressions = [
-  ["Сегодня", 1000 * 3600],
-  ["Завтра", 3600 * 24 * 1000],
-  ["Послезавтра", 3600 * 24 * 1000 * 2]
+const exprs = [
+  [/(^|\s)(сегодня)|(today)($|\s)/i, 0],
+  [/(^|\s)(завтра)|(tomorrow)($|\s)/i, 1],
+  [/(^|\s)(послезавтра)|(after tomorrow)($|\s)/i, 2]
 ];
 
+/**
+ * @param {String} text
+ * @return {Date|false} dueDate
+ */
 export const parser = text => {
-  const now = new Date();
+  let now = new Date();
   let dueDate = new Date(now.getTime());
+  let thereIsDateExpression = false;
 
-  codeExpressions.forEach(expr => {
-    if (new RegExp(expr[0], "i").test(text))
-      dueDate.setTime(Date.now() + expr[1]);
+  exprs.forEach(expr => {
+    if (text.match(expr[0])) {
+      dueDate.setDate(dueDate.getDate() + expr[1]);
+      thereIsDateExpression = true;
+    }
   });
 
-  let match = text.match(/(\d{1,2})\:(\d{1,2})/i);
-  if (match)
-    dueDate.setHours(match[1], match[2]);
+  const time = /(\d{1,2}):(\d{1,2})/i;
+  const match_time = text.match(time);
 
-  if (now.getTime() === dueDate.getTime())
-    dueDate = null;
-  return dueDate;
-}
+  if (match_time) {
+    dueDate.setHours(match_time[1], match_time[2], 0);
+    thereIsDateExpression = true;
+  } else
+    dueDate.setHours(24, 0, 0);
+
+  if (thereIsDateExpression)
+    return dueDate;
+  return false;
+};

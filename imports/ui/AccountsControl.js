@@ -72,13 +72,13 @@ class AccountsControl extends Component {
 
   handleClick = event => {
     this.setState({
-      anchorEl: event.currentTarget,
+      anchorEl: event.currentTarget
     });
   };
 
   handleClose = () => {
     this.setState({
-      anchorEl: null,
+      anchorEl: null
     });
   };
 
@@ -92,7 +92,7 @@ class AccountsControl extends Component {
 
     Accounts.createUser({
       username: this.state.name,
-      password: this.state.password,
+      password: this.state.password
     }, err => {
       if (err)
         alert(err.reason);
@@ -116,11 +116,11 @@ class AccountsControl extends Component {
   }
 
   handleDeleteAccount = () => {
-    let sure = confirm("Deleting this account. Are you sure? Data cannot be restored!");
+    const sure = confirm("Deleting this account. Are you sure? Data cannot be restored!");
 
     if (sure) {
       Meteor.call('accounts.deleteCurrentAccount', true);
-      
+
       this.handleLogout();
     }
   }
@@ -159,11 +159,11 @@ class AccountsControl extends Component {
           <Button variant="contained" type="submit">
             Log in
           </Button>
-          
+
           <Button variant="outlined" onClick={this.handleSignUp}>
             Create new account
           </Button>
-          
+
           <Button variant="outlined" onClick={this.handleLoginWithGoogle}>
             Sign in with google
           </Button>
@@ -228,13 +228,13 @@ class AccountsControl extends Component {
             </ListItem>
           </List>
         </div>
-      )
+      );
     else
       return this.logIn();
   }
 
   render() {
-    const classes = this.props.classes;
+    const { classes } = this.props;
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
     const currentUser = Meteor.user();
@@ -242,11 +242,11 @@ class AccountsControl extends Component {
 
     if (currentUser)
       username = currentUser.username || (currentUser.profile ? currentUser.profile.name : "unknown");
-      
+
     return (
       <div>
         <Button
-          aria-owns={open ? 'simple-popper' : undefined}
+          aria-owns={open ? 'simple-popper' : null}
           aria-haspopup="true"
           variant="text"
           color="inherit"
@@ -261,11 +261,11 @@ class AccountsControl extends Component {
           onClose={this.handleClose}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'center',
+            horizontal: 'center'
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'center'
           }}>
           <div className="AccountsControl">
             {this.show()}
@@ -276,6 +276,4 @@ class AccountsControl extends Component {
   }
 }
 
-export default withRouter(
-  withStyles(styles)(AccountsControl)
-);
+export default withRouter(withStyles(styles)(AccountsControl));

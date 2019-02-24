@@ -23,9 +23,9 @@ const styles = {
   },
   fab: {
     position: 'fixed',
-    bottom:  17,
-    right: 17,
-  },
+    bottom: 17,
+    right: 17
+  }
 };
 
 class Settings extends Component {
@@ -55,14 +55,14 @@ class Settings extends Component {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
-    if (currentIndex === -1) {
+    if (currentIndex === -1)
       newChecked.push(value);
-    } else {
+    else
       newChecked.splice(currentIndex, 1);
-    }
+
 
     this.setState({
-      checked: newChecked,
+      checked: newChecked
     }, () => {
       if (value.indexOf('hide') !== -1)
         this.props.toggleHideCompleted();

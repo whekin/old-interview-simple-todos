@@ -13,8 +13,14 @@
     "react"
   ],
 
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  
   "extends": [
-    "eslint:all",
+    "eslint:recommended",
     "plugin:react/recommended"
   ],
 
@@ -59,6 +65,12 @@
     "no-process-env": "off",
     "no-nested-ternary": "off",
     "react/jsx-key": "off",
+    "require-unicode-regexp": "off",
+    "array-element-newline": "off",
+    "space-in-parens": "off",
+    "multiline-ternary": "off",
+    "no-underscore-dangle": "off",
+    "no-empty-function": "off",
 
     "max-len": ["error", 120],
     "max-lines": ["warn", 1000],
@@ -66,9 +78,7 @@
     "indent": ["error", 2],
     "id-length": ["error", { "exceptions": ["x", "y", "z", "e", "i", "j"] }],
     "quote-props": ["error", "as-needed"],
-    "space-in-parens": ["error", "never", { "exceptions": ["()"] }],
     "object-curly-spacing": ["error", "always"],
-    "multiline-ternary": ["error", "always-multiline"],
     "eol-last": "error",
     "max-lines-per-function": ["error", 300],
     "arrow-parens": ["error", "as-needed"],
@@ -123,7 +133,6 @@
     "no-caller": "error",
     "no-case-declarations": "error",
     "no-else-return": "off",
-    "no-empty-function": ["error", { "allow": ["constructors", "methods"]}],
     "no-empty-pattern": "error",
     "no-eq-null": "error",
     "no-eval": "error",

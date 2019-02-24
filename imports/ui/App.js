@@ -12,12 +12,12 @@ import { parser } from '../../imports/parser';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#009688'
+      main: '#29b6f6'
     },
     secondary: {
-      main: '#ffea00'
+      main: '#ff8a65'
     }
-  },
+  }
 });
 
 class App extends Component {
@@ -29,14 +29,12 @@ class App extends Component {
   handleChange = event => {
     this.setState({
       [event.target.name]: event.target.value
-    })
+    });
   }
 
   handleSubmit = event => {
     event.preventDefault();
-
-    let dueDate;
-    dueDate = parser(this.state.taskValue.trim());
+    const dueDate = parser(this.state.taskValue.trim());
     console.log(dueDate);
     Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate);
 
@@ -50,7 +48,7 @@ class App extends Component {
       hideCompleted: !this.state.hideCompleted
     });
   }
- 
+
   render() {
     return (
       <MuiThemeProvider theme={theme}>
@@ -74,7 +72,7 @@ class App extends Component {
                   autoComplete="off"
                   name="taskValue"
                   InputLabelProps={{
-                    shrink: true,
+                    shrink: true
                   }} />
               </form> : ''
             }
@@ -94,9 +92,6 @@ class App extends Component {
   }
 }
 
-export default withRouter(
-  withTracker(() => {
-    return {
-      currentUser: Meteor.user()
-    };
-})(App));
+export default withRouter(withTracker(() => ({
+  currentUser: Meteor.user()
+}))(App));
