@@ -37,7 +37,7 @@ import MenuIcon from '@material-ui/icons/MoreVert';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const styles = theme => ({
+const styles = () => ({
   zIndex: {
     zIndex: 100
   },
@@ -51,7 +51,7 @@ const styles = theme => ({
     flexWrap: 'wrap'
   },
   dueDate: {
-    background: theme.palette.secondary
+    backgroundColor: '#e57373'
   }
 });
 

@@ -12,10 +12,10 @@ import { parser } from '../../imports/parser';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#29b6f6'
+      main: '#263238'
     },
     secondary: {
-      main: '#ff8a65'
+      main: '#2196f3'
     }
   }
 });
@@ -35,7 +35,7 @@ class App extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const dueDate = parser(this.state.taskValue.trim());
-    console.log(dueDate);
+
     Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate);
 
     this.setState({

@@ -22,7 +22,7 @@ import {
 } from '@material-ui/icons/';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = () => ({
   rightIcon: {
     marginLeft: 7
   },

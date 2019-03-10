@@ -12,11 +12,13 @@ export const parser = text => {
   let now = new Date();
   let dueDate = new Date(now.getTime());
   let thereIsDateExpression = false;
+  let textWithoutDate = text.toString();
 
   exprs.forEach(expr => {
     if (text.match(expr[0])) {
       dueDate.setDate(dueDate.getDate() + expr[1]);
       thereIsDateExpression = true;
+      textWithoutDate = textWithoutDate.replace(expr[0], '');
     }
   });
 
@@ -26,8 +28,13 @@ export const parser = text => {
   if (match_time) {
     dueDate.setHours(match_time[1], match_time[2], 0);
     thereIsDateExpression = true;
+    textWithoutDate = textWithoutDate.replace(match_time[0], '');
   } else
     dueDate.setHours(24, 0, 0);
+
+
+  if(!/\S/.test(textWithoutDate))
+    alert("Inputed only date");
 
   if (thereIsDateExpression)
     return dueDate;
