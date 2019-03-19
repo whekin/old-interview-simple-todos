@@ -17,25 +17,17 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-/*
- import {
-  PanoramaFishEye,
-  CheckCirleIcon,
-  PublicIcon,
-  InfoIcon,
-  MenuIcon,
-  EditIcon,
-  DeleteIcon
-} from '@material-ui/icons';
- */
 
-import PanoramaFishEye from '@material-ui/icons/PanoramaFishEye';
-import CheckCirleIcon from '@material-ui/icons/CheckCircle';
-import PublicIcon from '@material-ui/icons/Public';
-import InfoIcon from '@material-ui/icons/Info';
-import MenuIcon from '@material-ui/icons/MoreVert';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import {
+  PanoramaFishEye,
+  CheckCircle as CheckCirleIcon,
+  Public as PublicIcon,
+  Info as InfoIcon,
+  MoreVert as MenuIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon
+} from '@material-ui/icons';
+
 
 const styles = () => ({
   zIndex: {

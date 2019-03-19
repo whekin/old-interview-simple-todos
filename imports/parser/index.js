@@ -29,14 +29,19 @@ export const parser = text => {
     dueDate.setHours(match_time[1], match_time[2], 0);
     thereIsDateExpression = true;
     textWithoutDate = textWithoutDate.replace(match_time[0], '');
-  } else
+    textWithoutDate = textWithoutDate.replace(/at|в/i, "");
+  } else {
     dueDate.setHours(24, 0, 0);
+  }
 
 
-  if(!/\S/.test(textWithoutDate))
-    alert("Inputed only date");
+  if (!/\S/.test(textWithoutDate)) {
+    alert("Inputed only the date");
+  }
 
-  if (thereIsDateExpression)
+  if (thereIsDateExpression) {
     return dueDate;
+  }
+
   return false;
 };
