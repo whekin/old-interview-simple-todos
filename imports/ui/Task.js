@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { ReactHeight } from 'react-height';
 import { Meteor } from 'meteor/meteor';
+import { parser } from '../../imports/ui/parser';
 import moment from 'moment';
+
 import {
   ListItem,
   IconButton,
@@ -17,7 +19,6 @@ import {
 } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
-
 import {
   PanoramaFishEye,
   CheckCircle as CheckCirleIcon,
@@ -27,7 +28,6 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon
 } from '@material-ui/icons';
-
 
 const styles = () => ({
   zIndex: {
@@ -47,10 +47,22 @@ const styles = () => ({
   }
 });
 
+const isToday = date => new Date(date).setHours(0, 0, 0, 0) === new Date().setHours(0, 0, 0, 0);
+
 class Task extends Component {
   state = {
     open: false,
-    height: "0px"
+    height: "0"
+  }
+
+  changeDate = date => {
+    Meteor.call('tasks.setDueDate', this.props.task._id, date);
+  }
+
+  onClickDueDate = () => {
+    alert("Sorry, changing a due date of a task will be arrived soon!");
+    // data
+    //this.changeDate(new Date());
   }
 
   toggleChecked = () => {
@@ -63,8 +75,12 @@ class Task extends Component {
 
   editThisTask = () => {
     const newText = window.prompt("Edit the task", this.props.task.text);
+    const dueDate = parser(newText);
+
     if (newText)
       Meteor.call('tasks.setText', this.props.task._id, newText);
+    if (typeof dueDate == "object")
+      Meteor.call('tasks.setDueDate', this.props.task._id, dueDate);
   }
 
   togglePrivate = () => {
@@ -79,7 +95,6 @@ class Task extends Component {
     if (this.anchorEl.contains(event.target))
       return;
 
-
     this.setState({ open: false });
   };
 
@@ -87,13 +102,21 @@ class Task extends Component {
     const { dueDate } = this.props.task;
 
     if (dueDate)
-      alert(moment(dueDate).fromNow());
+      alert(moment(dueDate.date).fromNow());
     else
       alert("Date of due task isn't indicated");
   }
 
+  getLabel = dueDate => (
+    dueDate.isWholeDay ?
+      isToday(dueDate.date) ? moment(dueDate.date).calendar().split(",")[0] :
+        moment(dueDate.date).format("Do MMMM") :
+      moment(dueDate.date).format("Do MMMM в kk:mm")
+  );
+
   render() {
     const { classes, task } = this.props;
+
     return (
       <div style={{ height: this.state.height }}>
         <ReactHeight onHeightReady={height => {
@@ -125,11 +148,14 @@ class Task extends Component {
                   <div className="task__dueDate">
                     <Chip
                       className={
-                        task.dueDate < new Date() ?
+                        // here is a problem...
+                        task.dueDate.date < new Date() ?
                           classes.dueDate :
                           ""
                       }
-                      label={moment(task.dueDate).calendar()}/>
+                      onClick={this.onClickDueDate}
+                      label={task.dueDate && this.getLabel(task.dueDate)}
+                    />
                   </div>
                   : ""
                 }

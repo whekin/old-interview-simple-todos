@@ -7,7 +7,8 @@ import Settings from './Settings.js';
 import MainTab from './MainTab';
 import { TextField, Typography } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { parser } from '../../imports/parser';
+import { parser } from '../../imports/ui/parser';
+import 'moment/locale/ru';
 
 const theme = createMuiTheme({
   palette: {
@@ -34,7 +35,12 @@ class App extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const dueDate = parser(this.state.taskValue.trim());
+    const dueDate = parser(this.state.taskValue);
+
+    if (dueDate && dueDate.isOnlyDate) {
+      alert("The date only entered");
+      return;
+    }
 
     Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate);
 
@@ -79,7 +85,7 @@ class App extends Component {
             <div className="tasks">
               {this.props.currentUser ?
                 <MainTab hideCompleted={this.state.hideCompleted}/>
-                : <Typography>Please, Sign in.</Typography>
+                : <Typography>Please, sign in.</Typography>
               }
             </div>
             <Settings

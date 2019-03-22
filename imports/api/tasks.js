@@ -96,5 +96,19 @@ Meteor.methods({
     if (!this.userId)
       throw new Meteor.Error('not-authorized');
     Tasks.remove({ owner: this.userId });
+  },
+  'tasks.setDueDate'(taskId, dueDate) {
+    check(taskId, String);
+    check(dueDate, Object);
+
+    if (!this.userId)
+      throw new Meteor.Error('not-authorized');
+
+    const task = Tasks.findOne(taskId);
+
+    if (task.owner !== this.userId)
+      throw new Meteor.Error('not-authorized');
+
+    Tasks.update(taskId, { $set: { dueDate } });
   }
 });
