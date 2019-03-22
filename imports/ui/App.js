@@ -38,11 +38,15 @@ class App extends Component {
     const dueDate = parser(this.state.taskValue);
 
     if (dueDate && dueDate.isOnlyDate) {
-      alert("The date only entered");
+      window.alert("The date only entered");
       return;
     }
 
-    Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate);
+    Meteor.call('tasks.insert', this.state.taskValue.trim(), dueDate && {
+      date: dueDate.date,
+      isWholeDay: dueDate.isWholeDay,
+      isTimeUp: false
+    });
 
     this.setState({
       taskValue: ""

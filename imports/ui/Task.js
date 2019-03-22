@@ -60,7 +60,7 @@ class Task extends Component {
   }
 
   onClickDueDate = () => {
-    alert("Sorry, changing a due date of a task will be arrived soon!");
+    window.alert("Sorry, changing a due date of a task will be arrived soon!");
     // data
     //this.changeDate(new Date());
   }
@@ -102,9 +102,9 @@ class Task extends Component {
     const { dueDate } = this.props.task;
 
     if (dueDate)
-      alert(moment(dueDate.date).fromNow());
+      window.alert(moment(dueDate.date).fromNow());
     else
-      alert("Date of due task isn't indicated");
+      window.alert("Date of due task isn't indicated");
   }
 
   getLabel = dueDate => (
@@ -149,7 +149,7 @@ class Task extends Component {
                     <Chip
                       className={
                         // here is a problem...
-                        task.dueDate.date < new Date() ?
+                        task.dueDate.isTimeUp ?
                           classes.dueDate :
                           ""
                       }

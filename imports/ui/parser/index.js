@@ -45,7 +45,8 @@ export const parser = text => {
     return {
       date: dueDate,
       isWholeDay,
-      isOnlyDate
+      isOnlyDate,
+      isTimeUp: false
     };
 
   return false;

@@ -52,7 +52,7 @@ class AccountsControl extends Component {
 
     Meteor.loginWithPassword(this.state.name, this.state.password, err => {
       if (err)
-        alert(err.reason);
+        window.alert(err.reason);
       else {
         this.handleClose();
         this.clearForm();
@@ -95,7 +95,7 @@ class AccountsControl extends Component {
       password: this.state.password
     }, err => {
       if (err)
-        alert(err.reason);
+        window.alert(err.reason);
       else {
         this.handleClose();
         this.props.history.push("/");
@@ -116,7 +116,7 @@ class AccountsControl extends Component {
   }
 
   handleDeleteAccount = () => {
-    const sure = confirm("Deleting this account. Are you sure? Data cannot be restored!");
+    const sure = window.confirm("Deleting this account. Are you sure? Data cannot be restored!");
 
     if (sure) {
       Meteor.call('accounts.deleteCurrentAccount', true);
